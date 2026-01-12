@@ -11,11 +11,7 @@ app = FastAPI()
 def get_details_from_ip(ip: ipv4_address):
 
     coordinates = get_coordinates(ip)
-    return coordinates
-
-
-
-
+    return {'ip': ip, 'details': coordinates}
 
 
 @app.get('/get-all-ips')
