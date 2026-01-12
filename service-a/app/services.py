@@ -1,7 +1,8 @@
 import requests
 import os
+from fastapi import HTTPException
 from dotenv import load_dotenv
-from schemas import ipv4_address
+from schemas import ipv4_address, IpData
 
 
 
@@ -13,7 +14,6 @@ service_b_url = 'http://'
 
 
 
-
 def clean_data(data: dict) -> dict:
     ip = data.get('connection').get('ip')
     location = data.get('location')
@@ -22,25 +22,59 @@ def clean_data(data: dict) -> dict:
 
     cleaned_data = {
         'ip': ip,
-        'latitude': latitude,
-        'longitude': longitude
+        'coord': {
+            'latitude': latitude,
+            'longitude': longitude
+            }
         }
 
     return cleaned_data
 
 
 
+def get_all_data() -> list:
+    try:
+        response = requests.get(f'{service_b_url}/get-all-ips')
+        
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=response.text)
+    
+    except HTTPException as err:
+        return err
+
+    return response.json()
+
+
 
 def get_coordinates(ip: ipv4_address) -> dict:
+    try:
+        response = requests.get(
+        f"{ip2loc_url}/{API_KEY}/{ip}"
+        )
+
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=response.text)
     
-    response = requests.get(
-    f"{ip2loc_url}/{API_KEY}/{ip}"
-    )
+    except HTTPException as err:
+        return err
 
     clean_response = clean_data(response.json())
 
-    return clean_response
+
+    is_saved = save_ip_data(IpData(**clean_response))
+
+    return is_saved
 
 
-def post_h(data : dict):
-    response = requests.post(f'{service_b_url}', json=data)
+def save_ip_data(data : IpData):
+    try:    
+        response = requests.post(f'{service_b_url}/save-ip', json=data.model_dump())
+        
+        if response.status_code != 200:
+            raise HTTPException(status_code=response.status_code, detail=response.text)
+    
+    except HTTPException as err:
+        return err
+    
+    return response.json()
+

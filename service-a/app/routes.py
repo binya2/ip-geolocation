@@ -9,11 +9,16 @@ app = FastAPI()
 
 @app.get('/{ip}')
 def get_details_from_ip(ip: ipv4_address):
+
     coordinates = get_coordinates(ip)
+    return coordinates
+
+
 
 
 
 
 @app.get('/get-all-ips')
 def get_all():
-    pass
+    data = get_all_data()
+    return data
