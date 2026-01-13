@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from schemas import ipv4_address
+from schemas import ipvany_address, IpData
 from services import *
 
 
@@ -8,9 +8,14 @@ app = FastAPI()
 
 
 @app.get('/{ip}')
-def get_details_from_ip(ip: ipv4_address):
+def get_details_from_ip(ip: ipvany_address):
 
-    coordinates = get_coordinates(ip)
+    response = get_coordinates(ip)
+    
+    clean_response = clean_data(response)
+
+    coordinates = save_ip_data(IpData(**clean_response))
+
     return {'ip': ip, 'details': coordinates}
 
 
