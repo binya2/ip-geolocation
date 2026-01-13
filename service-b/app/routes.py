@@ -21,7 +21,6 @@ async def post(ip_to_coordinates: IpToCoordinates):
 async def get_all():
     try:
         data = await storage.get_all_locations()
-        print(data)
         return data
     except Exception as e:
         return {"message": str(e)}
@@ -29,5 +28,8 @@ async def get_all():
 
 @router.get("/redis/{ip}", status_code=status.HTTP_200_OK)
 async def get_py_ip(ip):
-    data = await storage.get_location_by_ip(ip.__str__())
-    return data
+    try:
+        data = await storage.get_location_by_ip(ip.__str__())
+        return data
+    except Exception as e:
+        return {"message": str(e)}
