@@ -1,4 +1,4 @@
-from pydantic import BaseModel, IPvAnyAddress, Field
+from pydantic import BaseModel, IPvAnyAddress
 from pydantic_extra_types.coordinate import Coordinate
 
 
