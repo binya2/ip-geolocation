@@ -13,11 +13,11 @@ def get_details_from_ip(ip: ipvany_address):
         print(response)
         if response.get('connection'):
             clean_response = clean_data(response)
-            save_ip_data(IpData(**clean_response))
+            save_ip_data(clean_response)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    return {'ip': ip, 'details': clean_response}
+    return {'message': 'ip saved successfully', 'details': clean_response}
 
 
 @app.get('/get-all-ips')
