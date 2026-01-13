@@ -25,6 +25,6 @@ spec:
         - name: API_KEY
           value: 5F67eMEeTFUlPaewp4z6JeMQsu83klkB
         - name: SERVICE_B_IP
-          value: db-api
+          value: "db-api"
         - name: SERVICE_B_PORT
           value: '8000'

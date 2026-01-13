@@ -1,16 +1,14 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import HTTPException, APIRouter
 
 from services import *
 
-app = FastAPI()
+router = APIRouter()
 
 
-@app.get('/{ip}')
-def get_details_from_ip(ip: ipvany_address):
+@router.get('/{ip}')
+def get_details_from_ip(ip:str):
     response = get_coordinates(ip)
-
     try:
-        print(response)
         if response.get('connection'):
             clean_response = clean_data(response)
             is_saved = save_ip_data(clean_response)
@@ -22,7 +20,7 @@ def get_details_from_ip(ip: ipvany_address):
     return {'message': 'ip saved successfully', 'request details': is_saved, 'ip details': clean_response}
 
 
-@app.get('/get-all-ips')
+@router.get('/get-all-ips')
 def get_all():
     try:
         data = get_all_data()
