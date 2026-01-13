@@ -27,9 +27,12 @@ def get_details_from_ip(ip: ipvany_address):
 def get_all():
     try:
         data = get_all_data()
-        if data.get('ip'):
-            return data
+        
         if not data:
             return {'message': 'No data found'}
+    
+        if data.get('ip'):
+            return data
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
