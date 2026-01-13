@@ -1,14 +1,9 @@
 from pydantic.networks import IPvAnyAddress
 from pydantic import BaseModel
-
+from pydantic_extra_types.coordinate import Coordinate
 
 ipvany_address = IPvAnyAddress
 
-class Coordinates(BaseModel):
-    latitude: float
-    longitude: float
-
-
 class IpData(BaseModel):
-    ip: ipvany_address
-    coord: Coordinates
+    ip: IPvAnyAddress
+    coord: Coordinate

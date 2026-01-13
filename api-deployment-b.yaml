@@ -20,7 +20,6 @@ spec:
           image: beni2/service-b-storage:v1
           ports:
             - containerPort: 8000
-              name: http
           env:
             - name: REDIS_HOST
               value: "redis-0.redis-headless"
