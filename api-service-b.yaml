@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: db-api
   labels:
-    app: redis
+    app: redis-api
 spec:
   type: ClusterIP
   selector:
-    app: redis
+    app: redis-api
   ports:
     - port: 8000
       targetPort: 8000

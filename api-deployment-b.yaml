@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: db-api
   labels:
-    app: redis
+    app: redis-api
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: redis
+      app: redis-api
   template:
     metadata:
       labels:
-        app: redis
+        app: redis-api
         tier: application
     spec:
       containers:
