@@ -6,11 +6,9 @@ router = APIRouter()
 
 
 @router.get('/{ip}')
-def get_details_from_ip(ip: ipvany_address):
+def get_details_from_ip(ip:str):
     response = get_coordinates(ip)
-
     try:
-        print(response)
         if response.get('connection'):
             clean_response = clean_data(response)
             save_ip_data(clean_response)
