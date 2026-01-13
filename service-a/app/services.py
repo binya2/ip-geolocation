@@ -13,8 +13,6 @@ service_b_port = os.getenv('SERVICE_B_PORT', None)
 service_b_url = f'http://{service_b_ip}:{service_b_port}/redis'
 
 
-
-
 def clean_data(data: dict) -> dict:
     ip = data.get('connection').get('ip')
     location = data.get('location')
@@ -63,10 +61,9 @@ def get_coordinates(ip: ipvany_address) -> dict:
 
 
 
-def save_ip_data(data : IpData):
+def save_ip_data(data : dict):
     try:    
-        response = requests.post(service_b_url, json=data.model_dump())
-        
+        response = requests.post(service_b_url, json=data)
         if response.get('status') != True:
             raise requests.exceptions.HTTPError(response=response.get('message'))
         requests.raise_for_status()
