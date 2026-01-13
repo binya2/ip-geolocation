@@ -1,19 +1,30 @@
-apiVersion: v1
-kind: Pod
-metadate:
-  name: api-pod # TODO: ...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-a
   labels:
-    app: api-pod # TODO: ...
+    app: service-a
 spec:
-  containers:
-    - name: service-a
-      image: yosefshoval/service-a # TODO: ...
-      ports:
-      - containerPort: 8000
-      env:
-      - name: API_KEY
-        value: blabla # TODO: ...
-      - name: SERVICE_B_IP
-        value: http://service-b # TODO: ...
-      - name: SERVICE_B_PORT
-        value: '8000' # TODO: ...
+  replicas: 3
+  selector:
+    matchLabels:
+      app: service-a
+      managed-by: deployment
+  template:
+    metadata:
+      labels:
+        app: service-a
+        managed-by: deployment
+    spec:
+      containers:
+      - name: service-a
+        image: yosefshoval/service-a:v1
+        ports:
+        - containerPort: 8000
+        env:
+        - name: API_KEY
+          value: 5F67eMEeTFUlPaewp4z6JeMQsu83klkB
+        - name: SERVICE_B_IP
+          value: http://db-api
+        - name: SERVICE_B_PORT
+          value: '8000'
