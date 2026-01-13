@@ -11,4 +11,4 @@ class Coordinates(BaseModel):
 
 class IpData(BaseModel):
     ip: ipvany_address
-    coord: dict[Coordinates]
+    coord: Coordinates

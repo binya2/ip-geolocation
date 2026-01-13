@@ -1,16 +1,13 @@
 import requests
 import os
-# from dotenv import load_dotenv
-from schemas import ipv4_address, IpData
+from schemas import ipvany_address, IpData
 
 
 
-# load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
 ip2loc = 'https://api.ip2loc.com'
 ip2loc_url = f'{ip2loc}/{API_KEY}'
-
 service_b_ip = os.getenv('SERVICE_B_IP', None)
 service_b_port = os.getenv('SERVICE_B_PORT', None)
 service_b_url = f'http://{service_b_ip}:{service_b_port}/redis'
@@ -51,7 +48,7 @@ def get_all_data():
 
 
 
-def get_coordinates(ip: ipv4_address) -> dict:
+def get_coordinates(ip: ipvany_address) -> dict:
     try:
         response = requests.get(
         f"{ip2loc_url}/{ip}"
