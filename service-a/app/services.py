@@ -8,8 +8,8 @@ from schemas import ipvany_address, IpData
 API_KEY = os.getenv('API_KEY')
 ip2loc = 'https://api.ip2loc.com'
 ip2loc_url = f'{ip2loc}/{API_KEY}'
-service_b_ip = os.getenv('SERVICE_B_IP', None)
-service_b_port = os.getenv('SERVICE_B_PORT', None)
+service_b_ip = os.getenv('SERVICE_B_IP')
+service_b_port = os.getenv('SERVICE_B_PORT')
 service_b_url = f'http://{service_b_ip}:{service_b_port}/redis'
 
 
@@ -62,11 +62,11 @@ def get_coordinates(ip: ipvany_address) -> dict:
 
 
 def save_ip_data(data : dict):
-    try:    
+    try:
         response = requests.post(service_b_url, json=data)
         if response.get('status') != True:
             raise requests.exceptions.HTTPError(response=response.get('message'))
-        requests.raise_for_status()
+        response.raise_for_status()
 
     except requests.exceptions.HTTPError as err:
         return err

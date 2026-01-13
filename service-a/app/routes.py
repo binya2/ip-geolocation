@@ -13,11 +13,13 @@ def get_details_from_ip(ip: ipvany_address):
         print(response)
         if response.get('connection'):
             clean_response = clean_data(response)
-            save_ip_data(clean_response)
+            is_saved = save_ip_data(clean_response)
+        else:
+            raise HTTPException(status_code=500, detail={'Error': 'error when trying to save ip in the DB.'})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-    return {'message': 'ip saved successfully', 'details': clean_response}
+    return {'message': 'ip saved successfully', 'request details': is_saved, 'ip details': clean_response}
 
 
 @app.get('/get-all-ips')
