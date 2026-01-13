@@ -1,6 +1,7 @@
 import os
 
 import requests
+from fastapi import HTTPException
 
 from schemas import ipvany_address
 
@@ -51,11 +52,15 @@ def get_coordinates(ip: str):
 
 
 def save_ip_data(data: dict):
-    try:
-        response = requests.post(service_b_url, json=data)
-        if response.json().get('success') != True:
-            raise requests.exceptions.HTTPError(response=response.get('message'))
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as err:
-        return err
+    coordinates = data['coord']
+    if coordinates.get('latitude') and coordinates.get('longitude'):
+        try:
+            response = requests.post(service_b_url, json=data)
+            if response.json().get('success'):
+                raise requests.exceptions.HTTPError(response=response.json().get('message'))
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as err:
+            return err
+    else:
+        raise HTTPException(status_code=400, detail={'Error': 'error when trying to save ip data'})

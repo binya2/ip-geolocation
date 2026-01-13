@@ -11,11 +11,7 @@ def get_details_from_ip(ip:str):
     try:
         if response.get('connection'):
             clean_response = clean_data(response)
-            coordinates = clean_response['coord']
-            if coordinates.get('latitude') and coordinates.get('longitude'):
-                is_saved = save_ip_data(clean_response)
-            else:
-                return {'message': 'No data found'}
+            is_saved = save_ip_data(clean_response)
         else:
             raise HTTPException(status_code=500, detail={'Error': 'error when trying to save ip in the DB.'})
     except Exception as e:
