@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadate:
+  name: api-pod # TODO: ...
+  labels:
+    app: api-pod # TODO: ...
+spec:
+  containers:
+    - name: service-a
+      image: yosefshoval/service-a # TODO: ...
+      ports:
+      - containerPort: 8000
+      env:
+      - name: API_KEY
+        value: blabla # TODO: ...
+      - name: SERVICE_B_IP
+        value: http://service-b # TODO: ...
+      - name: SERVICE_B_PORT
+        value: '8000' # TODO: ...
