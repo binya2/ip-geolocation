@@ -33,7 +33,7 @@ def get_all_data():
     try:
         response = requests.get(service_b_url)
 
-        if response.get('status') != True:
+        if response.json().get('status') != True:
             raise requests.exceptions.HTTPError(response=response['message'])
         response.raise_for_status()
 

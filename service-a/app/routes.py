@@ -6,7 +6,7 @@ router = APIRouter()
 
 
 @router.get('/{ip}')
-def get_details_from_ip(ip:str):
+def get_details_from_ip(ip: str):
     response = get_coordinates(ip)
     try:
         if response.get('connection'):
