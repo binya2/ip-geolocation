@@ -24,6 +24,13 @@ spec:
         - name: API_KEY
           value: 5F67eMEeTFUlPaewp4z6JeMQsu83klkB
         - name: SERVICE_B_IP
-          value: "db-api"
+          value: "redis-api"
         - name: SERVICE_B_PORT
           value: '8000'
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"

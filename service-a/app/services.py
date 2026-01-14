@@ -1,5 +1,6 @@
 import os
 
+import httpx
 import requests
 from fastapi import HTTPException
 from pydantic import IPvAnyAddress, ValidationError
@@ -16,7 +17,7 @@ service_b_port = 38854
 service_b_url = f'http://{service_b_ip}:{service_b_port}/redis'
 
 
-def clean_data(data: dict) -> IpToCoordinates:
+async def clean_data(data: dict) -> IpToCoordinates:
     connection_info = data.get('connection', {})
     location_info = data.get('location', {})
     longitude = location_info.get('longitude')
@@ -27,42 +28,45 @@ def clean_data(data: dict) -> IpToCoordinates:
     try:
         current_ip: IPvAnyAddress = ip_str
         location = Coordinate(longitude=longitude, latitude=latitude)
-        data = IpToCoordinates(ip=current_ip, coord=location)
-        return data
+        return IpToCoordinates(ip=current_ip, coord=location)
+
     except ValidationError as e:
         print(f"Validation error: {e}")
         raise e
 
 
-def get_all_data():
-    try:
-        response = requests.get(service_b_url)
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as err:
-        return err
-
-
-def get_coordinates(ip: Ip):
-    try:
-        response = requests.get(
-            f"{ip2loc_url}/{ip}"
-        )
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as err:
-        return err
-
-
-def save_ip_data(data: IpToCoordinates):
-    if not (data.coord.latitude is None or data.coord.longitude is None):
+async def get_all_data():
+    async with httpx.AsyncClient() as client:
         try:
-            response = requests.post(service_b_url, json=data.model_dump(mode='json'))
-            if response.json().get('success'):
-                raise requests.exceptions.HTTPError(response=response.json().get('message'))
+            response = await client.get(service_b_url)
             response.raise_for_status()
             return response.json()
-        except requests.exceptions.HTTPError as err:
+        except httpx.HTTPError as err:
             return err
+
+
+async def get_coordinates(ip: Ip):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(
+                f"{ip2loc_url}/{ip}"
+            )
+            response.raise_for_status()
+            return response.json()
+        except httpx.HTTPError as err:
+            return err
+
+
+async def save_ip_data(data: IpToCoordinates):
+    if not (data.coord.latitude is None or data.coord.longitude is None):
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(service_b_url, json=data.model_dump(mode='json'))
+                response_data = response.json()
+                if not response_data.get('success'):
+                    raise requests.exceptions.HTTPError(response=response.json().get('message'))
+                return response_data
+            except httpx.HTTPError as err:
+                return err
     else:
         raise HTTPException(status_code=400, detail={'Error': 'error when trying to save ip data'})

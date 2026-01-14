@@ -6,12 +6,12 @@ router = APIRouter()
 
 
 @router.get('/get-ip/{ip}')
-def get_details_from_ip(ip):
-    response = get_coordinates(ip)
+async def get_details_from_ip(ip):
+    response = await get_coordinates(ip)
     try:
         if response.get('connection'):
-            clean_response = clean_data(response)
-            is_saved = save_ip_data(clean_response)
+            clean_response = await clean_data(response)
+            is_saved = await save_ip_data(clean_response)
             print("is_saved", is_saved)
             return {'ip details': clean_response}
         else:
@@ -21,9 +21,9 @@ def get_details_from_ip(ip):
 
 
 @router.get('/get-all-ips')
-def get_all():
+async def get_all():
     try:
-        data = get_all_data()
+        data = await get_all_data()
         if not data:
             return {'message': 'No data found'}
         return data

@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from starlette import status
 
 import storage
@@ -9,13 +9,14 @@ router = APIRouter(tags=["Coordinates_api"])
 
 @router.post("/redis", status_code=status.HTTP_201_CREATED)
 async def post(ip_to_coordinates: IpToCoordinates):
-    if await storage.save_location(ip_to_coordinates):
-        return {"success": True,
-                "message": "Redis Saved Successfully"}
-    else:
-        return {"success": False,
-                "message": "Redis Not Saved Successfully"}
+    result = await storage.save_location(ip_to_coordinates)
+    if result:
+        return {"success": True, "message": "Saved Successfully"}
 
+    raise HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail="Failed to save to Redis"
+    )
 
 @router.get("/redis", status_code=status.HTTP_200_OK)
 async def get_all():

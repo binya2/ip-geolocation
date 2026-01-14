@@ -32,14 +32,14 @@ async def save_location(data: IpToCoordinates):
 
 async def get_location_by_ip(ip_address: str) -> IpToCoordinates | None:
     key = f"geo:{ip_address}"
-    raw_json = await r.get(key)
-    if not raw_json:
-        return None
     try:
+        raw_json = await r.get(key)
+        if not raw_json:
+            return None
         data_dict = json.loads(raw_json)
-        data_dict["ip"] = ip_address
-        obj = IpToCoordinates.model_validate(data_dict)
-        return obj
+        if "ip" not in data_dict:
+            data_dict["ip"] = ip_address
+        return IpToCoordinates.model_validate(data_dict)
     except Exception as e:
         print(f"Error parsing data: {e}")
         return None
