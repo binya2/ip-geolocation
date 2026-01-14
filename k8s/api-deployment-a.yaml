@@ -15,22 +15,21 @@ spec:
         app: service-a
     spec:
       containers:
-      - name: service-a
-        image: beni2/service-a:01
-#        image: yosefshoval/service-a:v1
-        ports:
-        - containerPort: 8000
-        env:
-        - name: API_KEY
-          value: 5F67eMEeTFUlPaewp4z6JeMQsu83klkB
-        - name: SERVICE_B_IP
-          value: "redis-api"
-        - name: SERVICE_B_PORT
-          value: '8000'
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "50m"
-          limits:
-            memory: "128Mi"
-            cpu: "200m"
+        - name: service-a
+          image: beni2/service-a:01
+          ports:
+            - containerPort: 8000
+          env:
+            - name: API_KEY
+              value: 5F67eMEeTFUlPaewp4z6JeMQsu83klkB
+            - name: SERVICE_B_IP
+              value: "redis-api"
+            - name: SERVICE_B_PORT
+              value: '8000'
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
