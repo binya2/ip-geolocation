@@ -5,16 +5,14 @@ metadata:
   labels:
     app: service-a
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: service-a
-      managed-by: deployment
   template:
     metadata:
       labels:
         app: service-a
-        managed-by: deployment
     spec:
       containers:
       - name: service-a

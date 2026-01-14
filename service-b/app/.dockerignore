@@ -1,0 +1,35 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Development files
+*.md
+README*
+
+# Git
+.git/
+.gitignore
+
+# Environment files
+.env
+.env.local
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Docker files
+Dockerfile
+.dockerignore

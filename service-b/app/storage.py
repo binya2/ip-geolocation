@@ -3,7 +3,7 @@ import os
 
 import redis.asyncio as redis
 
-from schemas import IpToCoordinates
+from schemas.schemas import IpToCoordinates
 
 INDEX_KEY = "index:all_ips"
 

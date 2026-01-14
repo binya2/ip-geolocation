@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-api
+  labels:
+    app: redis-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-api
+  template:
+    metadata:
+      labels:
+        app: redis-api
+    spec:
+      containers:
+        - name: redis-api
+          image: beni2/service-b-storage:01
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_HOST
+              value: "redis-0.redis-headless"
+            - name: REDIS_PORT
+              value: "6379"
