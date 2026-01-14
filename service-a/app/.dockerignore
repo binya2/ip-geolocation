@@ -1,0 +1,55 @@
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# Development and testing
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+.tox/
+
+# IDE metadata (only if present in this directory)
+*.swp
+*.swo
+*~
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+README*
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# HTTP test files
+*.http
+rest.http
