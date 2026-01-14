@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
       - name: service-a
-        image: yosefshoval/service-a:v1
+        image: beni2/service-a:01
+#        image: yosefshoval/service-a:v1
         ports:
         - containerPort: 8000
         env:

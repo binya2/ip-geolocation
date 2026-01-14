@@ -3,7 +3,7 @@ import os
 
 import redis.asyncio as redis
 
-from schemas.schemas import IpToCoordinates
+from shared.schemas import IpToCoordinates
 
 INDEX_KEY = "index:all_ips"
 
@@ -21,8 +21,8 @@ async def save_location(data: IpToCoordinates):
         json_value = data.model_dump_json(include={"coord"})
 
         pipe = r.pipeline()
-        pipe.set(key, json_value)
-        pipe.sadd(INDEX_KEY, str(data.ip))
+        await pipe.set(key, json_value)
+        await pipe.sadd(INDEX_KEY, str(data.ip))
         await pipe.execute()
         return True
     except Exception as e:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: redis-api
-          image: beni2/service-b-storage:01
+          image: beni2/service-b:01
           ports:
             - containerPort: 8000
           env:

@@ -1,12 +1,12 @@
-from fastapi import HTTPException, APIRouter
+from fastapi import APIRouter, HTTPException
 
-from services import *
+from services import get_coordinates, clean_data, save_ip_data, get_all_data
 
 router = APIRouter()
 
 
 @router.get('/get-ip/{ip}')
-def get_details_from_ip(ip:str):
+def get_details_from_ip(ip):
     response = get_coordinates(ip)
     try:
         if response.get('connection'):

@@ -6,7 +6,7 @@ COPY service-b/app/requirements.txt ./service-b/app/
 RUN pip install --no-cache-dir -r service-b/app/requirements.txt
 
 COPY service-b/ ./service-b/
-COPY schemas/ ./schemas/
+COPY shared/ ./shared/
 ENV PYTHONPATH=/ip-geolocation
 
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser .

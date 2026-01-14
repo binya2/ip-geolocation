@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from starlette import status
 
 import storage
-from schemas.schemas import IpToCoordinates
+from shared.schemas import IpToCoordinates, Ip
 
 router = APIRouter(tags=["Coordinates_api"])
 
