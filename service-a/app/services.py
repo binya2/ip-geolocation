@@ -1,7 +1,7 @@
 import os
 
 import requests
-from pydantic_core import PydanticCustomError
+from fastapi import HTTPException
 
 from schemas import ipvany_address
 
@@ -9,7 +9,7 @@ API_KEY = os.getenv('API_KEY', "5F67eMEeTFUlPaewp4z6JeMQsu83klkB")
 ip2loc = 'https://api.ip2loc.com'
 ip2loc_url = f'{ip2loc}/{API_KEY}'
 service_b_ip = os.getenv('SERVICE_B_IP', "127.0.0.1")
-service_b_port = os.getenv('SERVICE_B_PORT',61982)
+service_b_port = os.getenv('SERVICE_B_PORT', 61982)
 service_b_url = f'http://{service_b_ip}:{service_b_port}/redis'
 
 
@@ -39,8 +39,6 @@ def get_all_data():
         return err
 
 
-
-
 def get_coordinates(ip: str):
     try:
         ip = ipvany_address(ip)
@@ -54,11 +52,15 @@ def get_coordinates(ip: str):
 
 
 def save_ip_data(data: dict):
-    try:
-        response = requests.post(service_b_url, json=data)
-        if response.json().get('success') != True:
-            raise requests.exceptions.HTTPError(response=response.get('message'))
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.HTTPError as err:
-        return err
+    coordinates = data['coord']
+    if coordinates.get('latitude') and coordinates.get('longitude'):
+        try:
+            response = requests.post(service_b_url, json=data)
+            if response.json().get('success'):
+                raise requests.exceptions.HTTPError(response=response.json().get('message'))
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as err:
+            return err
+    else:
+        raise HTTPException(status_code=400, detail={'Error': 'error when trying to save ip data'})
